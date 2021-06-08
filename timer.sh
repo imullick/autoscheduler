@@ -15,7 +15,7 @@ echo ""
 echo "Note - Any changes made in the CSV file will be updated here automatically within 60 seconds"
 echo ""
 
-echo "Your classes for the day are - "
+echo "Your meetings for the day are - "
 echo ""
 
 count=1
