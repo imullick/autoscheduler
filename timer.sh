@@ -72,6 +72,8 @@ do
 
 
 done < <(tail -n +2 scheduleorigcsv.csv)
+# scheduleorigcsv.csv should be replaced by the name of the CSV file in your laptop.
+
 echo "--------------------------------------"
 echo "Press control C at any time to stop :)"
 echo "--------------------------------------"
