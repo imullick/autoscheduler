@@ -4,7 +4,7 @@ Along with this document, there are 2 more -
 1. The code (.sh file) 
 2. A CSV File
 
-Note - This tool was developed primarily for time tables and class links (timings as per the Thapar timetable).
+Note - This tool was developed primarily for time tables and class links (timings as per our college timetable, which are of course editable :) ).
 However, you can add more rows to the table of the CSV Document for any other meetings scheduled. Ensure that you add all rows above the last row.
 
 For MacOS users,
