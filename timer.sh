@@ -1,15 +1,17 @@
 #!/bin/bash
 
-timestampnow=$(TZ=Asia/Calcutta date) # Tue Jun  1 21:57:03 IST 2021
-set -- $timestampnow
-daytoday=$(echo $1)
+# Time Calculations for display and use in code
+timestampnow=$(TZ=Asia/Calcutta date) # FORMAT -> Tue Jun  1 21:57:03 IST 2021
+set -- $timestampnow                  # Setting timestamp as current date and time
+daytoday=$(echo $1)                   # Selecting day from timestamp
 echo "Happy $daytoday!"
-datetoday=$(echo $2 $3)
+datetoday=$(echo $2 $3)               # Selecting month and date from timestamp
 echo "Date: $datetoday"
-timenow=$(echo $4)
+timenow=$(echo $4)                    # Selecting current time from timestamp
 echo "Current Time is: $timenow"
 timenow="${timenow:0:5}"
 
+# Printing required information for user
 echo ""
 
 echo "Note - Any changes made in the CSV file will be updated here automatically within 60 seconds"
@@ -18,15 +20,20 @@ echo ""
 echo "Your meetings for the day are - "
 echo ""
 
+# To count number of reminders
 count=1
 
-while IFS="," read -r Day Time Subject Links Notes
+# Loop to read CSV File
+while IFS="," read -r Day Time Subject Links Notes # Headings of columns of CSV file
 do
 
-  if [ ! -z "$Links" ] && [ "$Day" = "$daytoday" ]
-    then
+  if [ ! -z "$Links" ] && [ "$Day" = "$daytoday" ]  # Checking if a link is present (not null) and day is current day
+    then                                            # Printing required information for classes
       echo "Time: $Time"
-# Convert time to 12:01PM types and then   Timeless= gdate --date="$Time - 1 minute" +%T
+
+# Calculating time one minute less than time for classes, so that links for classes
+# can be opened one minute before their designated time.
+
       Timeless=$(gdate --date="$Time IST -60 sec" "+%R")
 
       if test -z "$Subject"
@@ -44,7 +51,9 @@ do
 
   fi
 
-  if [ "$Day" = "$daytoday" ] && [ "$Timeless" = "$timenow" ]
+# Opening link and announcing meeting at designated time
+
+  if [ "$Day" = "$daytoday" ] && [ "$Time" = "$timenow" ]
     then
       # Links="${Links%?}"
       say "It's time for your meeting!"
@@ -52,7 +61,7 @@ do
   fi
 
 
-# For reminders in which you don't want to be redirected to a link ->
+# For reminders where you don't want to be redirected to a link, eg- assignment due tomorrow ->
   if [ "$Subject" = "Reminder" ] && [ "$Day" = "$daytoday" ] && [ -z "$Links" ]
     then
       echo "----------"
@@ -65,15 +74,15 @@ do
       count=`expr $count + 1`
   fi
 
-  if [ "$Subject" = "Reminder" ] && [ "$Time" = "$timenow" ]
+# Announcing reminder at designated time
+
+  if [ "$Subject" = "Reminder" ] && [ "$Timeless" = "$timenow" ]
     then
       say "Reminder: "$Notes"!"
   fi
 
 
-done < <(tail -n +2 scheduleorigcsv.csv)
-# scheduleorigcsv.csv should be replaced by the name of the CSV file in your laptop.
-
+done < <(tail -n +2 finalschedule.csv)
 echo "--------------------------------------"
 echo "Press control C at any time to stop :)"
 echo "--------------------------------------"
